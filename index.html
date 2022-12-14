@@ -9,6 +9,51 @@
     <script src="javascript.js" defer></script>
 </head>
 <body>
-    <div>asdf asdf asdf</div>
+    <div id="input-card">
+        <form id="book-form">
+            <!--
+                Referenced this video for basic form layout:
+                Learn HTML Forms In 25 Minutes
+                By: Web Dev Simplified
+                https://www.youtube.com/watch?v=fNcJuPIZ2WE
+            -->
+            <h1>Book Input Field</h1>
+            <div>
+                <label for="title">Title:</label>
+                <input type="text" name="title" id="title" placeholder="Title" required>    
+            </div>
+            <div>
+                <label for="author">Author:</label>
+                <input type="text" name="author" id="author" placeholder="Author" required>    
+            </div>
+            <div>
+                <label for="pages">Pages:</label>
+                <input type="number" name="pages" id="pages" placeholder="Pages" required min="1" step="1">
+            </div>
+            <div>
+                <label for="read">Is Read:</label>
+                <input type="checkbox" name="read" id="read">
+            </div>
+            <div>
+                <button type="reset">Reset Form</button>
+            </div>
+            <div>
+                <button type="submit">Submit Form</button>
+            </div>
+            <br>
+        </form>
+    </div>
+    <div id="bookCardsContainer">
+        <div class="bookCard">
+            <h3>Title:</h3>
+            <p>TitleText</p>
+            <h3>Author:</h3>
+            <p>AuthorText</p>
+            <h3>Page Count:</h3>
+            <p>PageCount</p>
+            <h3>Is Read:</h3>
+            <p>IsReadStatus</p>
+        </div>
+    </div>
 </body>
 </html>

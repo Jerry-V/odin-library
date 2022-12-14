@@ -1,5 +1,44 @@
-div {
-    width: 100px;
-    height: 200px;
-    background-color: red;
+#bookCardsContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+#input-card {
+    width: 250px;
+    height: 300px;
+    border: solid black 2px;
+    background-color: whitesmoke;
+}
+
+label {
+    display: inline-block;
+    min-width: 60px;
+}
+
+/*
+Remove number input arrows:
+https://www.w3schools.com/howto/howto_css_hide_arrow_number.asp
+*/
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+#bookIsRead {
+    margin: 0;
+}
+
+.bookCard {
+    width: 200px;
+    height: 300px;
+    border: solid black 2px;
+    background-color: bisque;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
 }
