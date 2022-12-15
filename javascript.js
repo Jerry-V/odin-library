@@ -1,8 +1,11 @@
+// "Book" object template that stores relevent book information
 function Book(title, author, pages, read) {
     this.title = title,
     this.author = author,
     this.pages = pages,
     this.read = read,
+    
+    // Superfluous function, no need to remove.
     this.getInfo = function(){
       let readYetText = '';
       if (read === true) {
@@ -14,35 +17,33 @@ function Book(title, author, pages, read) {
     }
 }
 
-const randomBook1 = new Book('titleText1', 'authorText1', 142, true);
-const randomBook2 = new Book('titleText2', 'authorText2', 332, false);
-const randomBook3 = new Book('titleText3', 'authorText3', 834, true);
-
-// create array to hold 'Book' objects
+// Create array to hold "Book" objects
 var myLibrary = [];
 
-myLibrary.push(randomBook1);
-myLibrary.push(randomBook2);
-myLibrary.push(randomBook3);
+// Intial posted books
+const randomBook1 = addBookToLibrary('titleText1', 'authorText1', 142, true);
+const randomBook2 = addBookToLibrary('titleText2', 'authorText2', 332, false);
+const randomBook3 = addBookToLibrary('titleText3', 'authorText3', 834, true);
 
 function addBookToLibrary(title, author, pages, read) {
   const addedBook = new Book(title, author, pages, read)
+
+  // Checks if values are valid input types
   if ((typeof(title) === 'string' && typeof(author) === 'string')
   && typeof(pages) === 'number' && typeof(read) === 'boolean') {
     myLibrary.push(addedBook);
   } else {
+    // Message for when input types are invalid
     console.log(`required input types: (string, string, number, boolean)`);
   }
 }
 
-// how to submit a form
-// https://stackoverflow.com/questions/6799533/how-to-submit-a-form-with-javascript-by-clicking-a-link
-
-
+// Generates the book-cards according to the data within the myLibrary array.
 function listLibraryBooks(library) {
   const container = document.querySelector('#bookCardsContainer');
   
-  // Remove all previous child nodes within container
+  // Remove all previous child nodes within container for a fresh
+  // repopulation of said container with the updated myLibrary array.
   // https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
   while (container.firstChild){
     container.removeChild(container.lastChild);
@@ -51,11 +52,7 @@ function listLibraryBooks(library) {
   // Generate the container's book cards:
   for (book in library){
       const bookDiv = document.createElement('div');
-      // Show each book's index value
-      // console.log(book);
-      // Store each book's index value in the DOM element
-      bookDiv.dataset.libraryIndex = book;
-      bookDiv.id = book;
+
       // Create elements
       const bookTitle = document.createElement('p');
       const bookAuthor = document.createElement('p');
@@ -63,10 +60,12 @@ function listLibraryBooks(library) {
       const bookRead = document.createElement('p');
       const deleteButton = document.createElement('button');
       const readButton = document.createElement('button');
-      // Add classes
+      
+      // Add classes to elements
       bookDiv.classList.add('bookCard');
       deleteButton.classList.add('delete-button');
       readButton.classList.add('read-button');
+      
       // Append elements to the card div
       bookDiv.append(bookTitle);
       bookDiv.append(bookAuthor);
@@ -74,45 +73,37 @@ function listLibraryBooks(library) {
       bookDiv.append(bookRead);
       bookDiv.append(deleteButton);
       bookDiv.append(readButton);
-      // Change elements text
+      
+      // Insert elements text
       bookTitle.innerText=library[book].title;
       bookAuthor.innerText=library[book].author;
       bookPages.innerText=library[book].pages;
-      bookRead.innerText=library[book].read;
-      
-      // console.log(bookDiv.getAttribute('data-library-index'));
-      
+      bookRead.innerText=library[book].read;      
       
       // Append the manipulated card div to the card container
       container.appendChild(bookDiv);
       
-      let currentBookIndex = bookDiv.getAttribute('data-library-index');
+      // Set each card-element-ID-value to correspond with the object-index-value
+      // in the myLibrary array. This lets each card-element (AKA: "bookDiv")
+      // "remember" which array item needs to be removed or modified when the
+      // following events fire off.
+      bookDiv.id = book;
       
-      deleteButton.addEventListener('click',(e) => {
-        console.log(`This should delete element with index: ${currentBookIndex}`);
-        const card = document.getElementById(currentBookIndex);
-        card.style.setProperty('background-color', 'red');
-        // using replaceWith() without arguments appears to eliminate the selected node :D
-        // card.replaceWith();
-        // Splice returns the deleted array element, so don't do
-        // "myLibrary = myLibrary.splice..." else you will redefine
-        // myLibrary as containing ONLY the "deleted" element
-        myLibrary.splice(currentBookIndex, 1);
+      // Variable for code legibility
+      let selectedBook = bookDiv.id;
+      
+      // Deletes the selected book's card
+      deleteButton.addEventListener('click', (e) => {
+        myLibrary.splice(selectedBook, 1);
         listLibraryBooks(myLibrary);
-        // console.table(myLibrary);
       });
       
+      // Toggles the selected book's card's read boolean
       readButton.addEventListener('click', (e) => {
-        console.log(myLibrary[currentBookIndex]);
-        // Toggles the true/false status of "read" property
-        myLibrary[currentBookIndex].read = !myLibrary[currentBookIndex].read;
-        console.log(myLibrary[currentBookIndex]);
+        myLibrary[selectedBook].read = !myLibrary[selectedBook].read;
         listLibraryBooks(myLibrary);
       })
-      
     }
-  // console.log(myLibrary);
-  // console.clear();
   console.table(myLibrary);
 }
 
@@ -120,41 +111,41 @@ function listLibraryBooks(library) {
 listLibraryBooks(myLibrary);
 
 
-/* Grab form data, create new book object with data,
-add new book to myLibrary array of book objects */
-// This is a good way to utilize forms with Javascript:
-// Sending a form using the FormData object – JavaScript Tutorial
-// By: OpenJavaScript
-// https://www.youtube.com/watch?v=EnWqnyUZ65Y
+/* ============================== FORM CODE ============================== */
+
+// Grab form data and add the new book object to the myLibrary array of book objects. 
+// YouTube video talking about using the new "FormData" object to collect form data:
+//    Sending a form using the FormData object – JavaScript Tutorial
+//    By: OpenJavaScript
+//    https://www.youtube.com/watch?v=EnWqnyUZ65Y
 const form = document.querySelector('#book-form');
+
+// Adds functionality to the submit button
 form.addEventListener('submit', (e)=>{
-  // stops automatic page refresh
+  // Stops the automatic page refresh, mentioned in project requirements:
+  // https://www.theodinproject.com/lessons/node-path-javascript-library
+  // Without this the page always resets to its initial state
   e.preventDefault();
-  // utilize FormData object to collect form inputs
-  const formData = new FormData(form);
-  
-  // for (item of formData){
-  //   console.log(item[0], item[1]);
-  // }
-  
-  // for(const pair of formData.entries()){
-  //   console.log(`${pair[0]}, ${pair[1]}`);
-  // }
-  
+
+  // Utilize the FormData object to collect form inputs
   // List of FormData commands:
   // https://www.javascripttutorial.net/web-apis/javascript-formdata/
+  const formData = new FormData(form);
   let title = formData.get('title');
   let author = formData.get('author');
-  let pages = formData.get('pages');
-  // if the checkbox exists (not null) set it to true, otherwise false
-  let read = formData.get('read') ? true : false;
-  // console.log(title +' '+ author +' '+ pages +' '+ read);
+
+  // FormData only passes strings, but you can convert it back to a number afterwards.
+  // The "pages" value is read as a string, "parseInt" converts it back to an integer.
+  // https://stackoverflow.com/questions/68725067/formdata-dont-convert-number-inptu-field-to-string
+  // https://stackoverflow.com/questions/33870800/send-integers-in-formdata
+  let pages = parseInt(formData.get('pages'));
   
-  myLibrary.push(new Book(title,author,pages,read));
+  // If the checkbox exists (not null) set it to true, otherwise false
+  let read = formData.get('read') ? true : false;
+  
+  // Once the form's info is received, add another book to the library
+  addBookToLibrary(title,author,pages,read);
+  
+  // Update the displayed books
   listLibraryBooks(myLibrary);
 });
-
-function removeBook(index, library) {
-  library = library.splice(index, 1);
-  listLibraryBooks(myLibrary);
-}
