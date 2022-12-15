@@ -42,3 +42,23 @@ input[type=number] {
     display: grid;
     grid-template-columns: 1fr 3fr;
 }
+
+/* There is a difference between :after and ::after
+https://stackoverflow.com/questions/21676996/what-is-the-difference-between-after-and-after*/
+/* .delete-button {
+    align-self: center;
+    justify-self: center;
+    width: 30px;
+    height: 30px;
+    background-color: lightblue;
+} */
+
+.delete-button::after {
+    background-color: lightcoral;
+    content: 'X';
+}
+
+.read-button::after {
+    background-color: lightgreen;
+    content: 'X';
+}

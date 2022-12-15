@@ -6,23 +6,20 @@ function Book(title, author, pages, read) {
     this.getInfo = function(){
       let readYetText = '';
       if (read === true) {
-          readYetText = 'has been read';
+          readYetText = 'has been read.';
       } else {
-          readYetText = 'not read yet';
+          readYetText = 'not read yet.';
       }
       return `${title} by ${author}, ${pages} pages, ${readYetText}`;
     }
 }
-
-
-
 
 const randomBook1 = new Book('titleText1', 'authorText1', 142, true);
 const randomBook2 = new Book('titleText2', 'authorText2', 332, false);
 const randomBook3 = new Book('titleText3', 'authorText3', 834, true);
 
 // create array to hold 'Book' objects
-let myLibrary = [];
+var myLibrary = [];
 
 myLibrary.push(randomBook1);
 myLibrary.push(randomBook2);
@@ -44,33 +41,82 @@ function addBookToLibrary(title, author, pages, read) {
 
 function listLibraryBooks(library) {
   const container = document.querySelector('#bookCardsContainer');
+  
   // Remove all previous child nodes within container
   // https://stackoverflow.com/questions/3955229/remove-all-child-elements-of-a-dom-node-in-javascript
   while (container.firstChild){
     container.removeChild(container.lastChild);
   }
-  // Then generate the container's book cards:
   
+  // Generate the container's book cards:
   for (book in library){
       const bookDiv = document.createElement('div');
+      // Show each book's index value
+      // console.log(book);
+      // Store each book's index value in the DOM element
+      bookDiv.dataset.libraryIndex = book;
+      bookDiv.id = book;
+      // Create elements
       const bookTitle = document.createElement('p');
       const bookAuthor = document.createElement('p');
       const bookPages = document.createElement('p');
       const bookRead = document.createElement('p');
+      const deleteButton = document.createElement('button');
+      const readButton = document.createElement('button');
+      // Add classes
+      bookDiv.classList.add('bookCard');
+      deleteButton.classList.add('delete-button');
+      readButton.classList.add('read-button');
+      // Append elements to the card div
       bookDiv.append(bookTitle);
       bookDiv.append(bookAuthor);
       bookDiv.append(bookPages);
       bookDiv.append(bookRead);
+      bookDiv.append(deleteButton);
+      bookDiv.append(readButton);
+      // Change elements text
       bookTitle.innerText=library[book].title;
       bookAuthor.innerText=library[book].author;
       bookPages.innerText=library[book].pages;
       bookRead.innerText=library[book].read;
-      bookDiv.classList.add('bookCard');
+      
+      // console.log(bookDiv.getAttribute('data-library-index'));
+      
+      
+      // Append the manipulated card div to the card container
       container.appendChild(bookDiv);
-  }
-  console.table(library);
+      
+      let currentBookIndex = bookDiv.getAttribute('data-library-index');
+      
+      deleteButton.addEventListener('click',(e) => {
+        console.log(`This should delete element with index: ${currentBookIndex}`);
+        const card = document.getElementById(currentBookIndex);
+        card.style.setProperty('background-color', 'red');
+        // using replaceWith() without arguments appears to eliminate the selected node :D
+        // card.replaceWith();
+        // Splice returns the deleted array element, so don't do
+        // "myLibrary = myLibrary.splice..." else you will redefine
+        // myLibrary as containing ONLY the "deleted" element
+        myLibrary.splice(currentBookIndex, 1);
+        listLibraryBooks(myLibrary);
+        // console.table(myLibrary);
+      });
+      
+      readButton.addEventListener('click', (e) => {
+        console.log(myLibrary[currentBookIndex]);
+        // Toggles the true/false status of "read" property
+        myLibrary[currentBookIndex].read = !myLibrary[currentBookIndex].read;
+        console.log(myLibrary[currentBookIndex]);
+        listLibraryBooks(myLibrary);
+      })
+      
+    }
+  // console.log(myLibrary);
+  // console.clear();
+  console.table(myLibrary);
 }
 
+// Initial generation of book cards
 listLibraryBooks(myLibrary);
 
 
@@ -108,3 +154,7 @@ form.addEventListener('submit', (e)=>{
   listLibraryBooks(myLibrary);
 });
 
+function removeBook(index, library) {
+  library = library.splice(index, 1);
+  listLibraryBooks(myLibrary);
+}
