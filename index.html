@@ -9,6 +9,37 @@
     <script src="javascript.js" defer></script>
 </head>
 <body>
+    <!--
+        How to create a modal popup:
+            Build a Popup With JavaScript
+            By: Web Dev Simplififed
+            https://www.youtube.com/watch?v=MBaw_6cPmAw
+    -->
+    <!--
+        "data-modal-target" becomes a selector (using JS) that points to the modal
+        we want to open. Using "#modal" allows us to have multiple different modals
+        on the same page with different buttons to open them and it will only open
+        the exact modal designated.
+    -->
+    <button data-modal-target="#modal">Open Modal</button>    
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <div class="title">Title of modal</div>
+            <!--
+                From cited video above:
+                Using HTML entity "&times" instead of text "X" because
+                text scales with font size and thus changes
+                HTML entity list:
+                    https://www.w3schools.com/charsets/ref_html_entities_4.asp
+                He uses data attributes b/c he doesn't want to mix styling classes with javascript
+            -->
+            <button data-close-button class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellendus cumque ut tempore suscipit illum voluptates aliquid labore porro expedita cum? Rem pariatur accusamus dolorem vero nemo nobis non sapiente quasi reprehenderit vitae modi rerum totam possimus quae, assumenda repellat aliquid.
+        </div>
+    </div>
+    <div id="overlay"></div>
     <div id="input-card">
         <form id="book-form">
             <!--

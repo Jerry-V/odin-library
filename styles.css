@@ -62,3 +62,96 @@ https://stackoverflow.com/questions/21676996/what-is-the-difference-between-afte
     background-color: lightgreen;
     content: 'X';
 }
+
+/* ============================== MODAL CODE ============================== */
+
+/*
+How to create a modal popup:
+    Build a Popup With JavaScript
+    By: Web Dev Simplififed
+    https://www.youtube.com/watch?v=MBaw_6cPmAw
+*/
+
+*, *::after, *::before {
+    box-sizing: border-box;
+}
+
+.modal {
+    /* Fixes model when scrolling */
+    position: fixed;
+    /* Centers the top left corner of the modal container*/
+    top: 50%;
+    left: 50%;
+    /* Moves modal container left and up by 50% the size of the container.
+    This makes the modal container as a whole centered on the screen.
+    "scale(0)" makes the modal container invisible and also enables the 
+    usage of a smooth scale-in/out transition later on. */
+    transform: translate(-50%,-50%) scale(0);
+    /* Video notes that the modal scales-in from the bottom right because
+    we are in development mode */
+    transition: 200ms ease-in-out;
+    border: 1px solid black;
+    border-radius: 10px;
+    /* Makes modal draw above everything else, any sufficently large number will do */
+    z-index: 10;
+    /* Makes lower layers not show through the modal container by giving
+    a solid background color to see the modal on (removes "translucence") */
+    background-color: white;
+    /* Stays max-width until width value is reached */
+    width: 500px;
+    max-width: 80%;
+}
+
+.modal.active {
+    transform: translate(-50%,-50%) scale(1);
+}
+
+:root {
+    --modal-element-padding: 10px 15px;
+}
+
+.modal-header {
+    padding: var(--modal-element-padding);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid crimson;
+}
+
+.modal-header .title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.modal-header .close-button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.modal-body {
+    padding: var(--modal-element-padding);
+}
+
+#overlay {
+    position: fixed;
+    /* opacity makes the overlay invisible by default */
+    opacity: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    /* Makes overlay not capture click events, especially when it is invisible (not active) */
+    pointer-events: none;
+}
+
+#overlay.active {
+    opacity: 1;
+    /* Makes overlay capture click events and thus prevents being able to click
+    anything (like buttons) behind the overlay. */
+    pointer-events: all;
+}

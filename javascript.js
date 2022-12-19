@@ -1,4 +1,12 @@
-// "Book" object template that stores relevent book information
+// To get live server withing Visual Studio Code:
+// Ctrl + Shift + P
+// Simple Browser: Show
+// Paste server info:
+// http://127.0.0.1:5500/index.html
+
+
+
+// "Book" object constructor that stores relevent book information
 function Book(title, author, pages, read) {
     this.title = title,
     this.author = author,
@@ -61,7 +69,7 @@ function listLibraryBooks(library) {
       const deleteButton = document.createElement('button');
       const readButton = document.createElement('button');
       
-      // Add classes to elements
+      // Add CSS classes to elements
       bookDiv.classList.add('bookCard');
       deleteButton.classList.add('delete-button');
       readButton.classList.add('read-button');
@@ -74,7 +82,7 @@ function listLibraryBooks(library) {
       bookDiv.append(deleteButton);
       bookDiv.append(readButton);
       
-      // Insert elements text
+      // Insert elements' text
       bookTitle.innerText=library[book].title;
       bookAuthor.innerText=library[book].author;
       bookPages.innerText=library[book].pages;
@@ -93,13 +101,13 @@ function listLibraryBooks(library) {
       let selectedBook = bookDiv.id;
       
       // Deletes the selected book's card
-      deleteButton.addEventListener('click', (e) => {
+      deleteButton.addEventListener('click', () => {
         myLibrary.splice(selectedBook, 1);
         listLibraryBooks(myLibrary);
       });
       
       // Toggles the selected book's card's read boolean
-      readButton.addEventListener('click', (e) => {
+      readButton.addEventListener('click', () => {
         myLibrary[selectedBook].read = !myLibrary[selectedBook].read;
         listLibraryBooks(myLibrary);
       })
@@ -149,3 +157,63 @@ form.addEventListener('submit', (e)=>{
   // Update the displayed books
   listLibraryBooks(myLibrary);
 });
+
+/* ============================== MODAL CODE ============================== */
+
+// How to create a modal popup:
+//  Build a Popup With JavaScript
+//  By: Web Dev Simplififed
+//  https://www.youtube.com/watch?v=MBaw_6cPmAw
+
+// "querySelectorAll" used so this method can work with multiple buttons as well
+// "data-modal-target" are the buttons for opening up the modal
+const openModalButtons = document.querySelectorAll('[data-modal-target]');
+const closeModalButtons = document.querySelectorAll('[data-close-button]');
+// Selected overlay element so it will show/hide as needed
+const overlay = document.getElementById('overlay');
+
+
+openModalButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    // "dataset" lets you access the data attributes as if they were
+    // JS objects (and camel-case them for you).
+    // Using querySelector to select based on the html "data-modal-target" target.
+    const modal = document.querySelector(button.dataset.modalTarget);
+    openModal(modal);
+  })
+})
+
+// Adds the ability to close modals by clicking outside the modal text-box area.
+overlay.addEventListener('click', () => {
+  // Selects all modals but with ".modal.active" it selects only our active modals.
+  const modals = document.querySelectorAll('.modal.active');
+  modals.forEach(modal => {
+    closeModal(modal);
+  })
+})
+
+closeModalButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    // Accesses the parent modal of this button.
+    // Can use "closest" b/c the button is inside our modal.
+    // This takes a selector, "modal" in this case, and gets the closest
+    // parent element with said class.
+    // It goes up the element "tree" until it finds a parent with said class.
+    // Then it executes the "closeModal" function which removes the "active"
+    // class from said modal parent and also the overlay div, thus closing them.
+    const modal = button.closest('.modal');
+    closeModal(modal);
+  })
+})
+
+function openModal(modal) {
+  if (modal == null) return // If for some reason it is called w/o a modal, just return
+  modal.classList.add('active'); // If there is a modal, just add "active" class
+  overlay.classList.add('active'); // Want overlay to show everytime modal is shown
+}
+
+function closeModal(modal) {
+  if (modal == null) return
+  modal.classList.remove('active');
+  overlay.classList.remove('active');
+}
