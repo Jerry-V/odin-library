@@ -1,9 +1,146 @@
+/*
+Fonts:
+https://www.guildofarchivists.org/utilities/fonts/
+*/
+
+@font-face {
+    font-family: 'EXILE12';
+    src: url(fonts/EXILE12.ttf);
+}
+
+@font-face {
+    font-family: 'jancieni';
+    src: url(fonts/jancieni.ttf);
+}
+
+@font-face {
+    font-family: 'jancient';
+    src: url(fonts/jancient.ttf);
+}
+
+@font-face {
+    font-family: 'MystLinkingBook-Black';
+    src: url(fonts/MystLinkingBook-Black.ttf);
+}
+
+@font-face {
+    font-family: 'MystRevelation';
+    src: url(fonts/MystRevelation.ttf);
+}
+
+@font-face {
+    font-family: 'Riven301';
+    src: url(fonts/Riven301.ttf);
+}
+
+body {
+    /* https://wallup.net/myst-video-games-myst-revelation/ */
+    font-family: 'jancient';
+    background-image: url(myst-1671551387242-6283.jpg);
+    background-attachment: fixed;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#header {
+    margin: 1rem;
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    align-self: center;
+}
+
+#main-container {
+    border: 2px solid red;
+    margin: 1rem;
+    
+    background-color: rgba(255, 255, 255, 0.3);
+    padding: .5rem;
+    border-radius: 1rem;
+}
+
 #bookCardsContainer {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    width: fit-content;
+    border: 1px solid blue;
 }
 
-#input-card {
+/* ============================== CARD TEMPLATE ============================== */
+
+.test-card {
+    background-color: rgba(175, 109, 109, 0.5);
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    border-radius: 1rem;
+}
+
+.book-cover {
+    position: relative;
+    color: goldenrod;
+    display: flex;
+    justify-content: center;
+}
+
+.book-cover img {
+    max-width: 150px;
+    /* blur takes the edge off the image sharpness */
+    filter: blur(.5px);
+    border-radius: .25em;
+}
+
+/*
+How to "center" an absolute positioned element::after
+https://stackoverflow.com/questions/8508275/how-to-center-a-position-absolute-element
+ */
+.book-title, .book-author {
+    /* border: 1px solid blue; */
+    position: absolute;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 0;
+    margin-bottom: 0;
+    left: 0;
+    right: 0;
+    top: 20%;
+    text-align: center;
+    /* required or it will not show above the book */
+    z-index: 1;
+    /* background-color: rgba(255, 255, 255, 0.3); */
+    border-radius: 1rem;
+    text-decoration: underline;
+    overflow-wrap: break-word;
+}
+
+.book-author {
+    top: 60%;
+}
+
+.info-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+/* ============================== BOOK FORM ============================== */
+
+#book-form {
     width: 250px;
     height: 300px;
     border: solid black 2px;
@@ -22,25 +159,43 @@ https://www.w3schools.com/howto/howto_css_hide_arrow_number.asp
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
 /* Firefox */
 input[type=number] {
     -moz-appearance: textfield;
 }
 
+/* ============================== BOOK CARDS ============================== */
+
 #bookIsRead {
     margin: 0;
 }
 
 .bookCard {
-    width: 200px;
+    background-repeat: no-repeat;
+    background-size: auto;
+    width: min-content;
     height: 300px;
-    border: solid black 2px;
-    background-color: bisque;
     display: grid;
-    grid-template-columns: 1fr 3fr;
+    align-items: center;
+    background-size: contain;
+    color: whitesmoke;
+    border-radius: .5rem;
+    justify-items: center;
+}
+
+.bookCard p, .buttonsDiv {
+    margin: 0;
+    padding: .3rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: .5rem;
+}
+
+.buttonsDiv {
+    display: flex;
+    gap: 10px;
 }
 
 /* There is a difference between :after and ::after
@@ -55,12 +210,12 @@ https://stackoverflow.com/questions/21676996/what-is-the-difference-between-afte
 
 .delete-button::after {
     background-color: lightcoral;
-    content: 'X';
+    content: 'Remove';
 }
 
 .read-button::after {
     background-color: lightgreen;
-    content: 'X';
+    content: 'Read Toggle';
 }
 
 /* ============================== MODAL CODE ============================== */
@@ -91,15 +246,13 @@ How to create a modal popup:
     we are in development mode */
     transition: 200ms ease-in-out;
     border: 1px solid black;
-    border-radius: 10px;
+    border-radius: 1rem;
     /* Makes modal draw above everything else, any sufficently large number will do */
     z-index: 10;
     /* Makes lower layers not show through the modal container by giving
     a solid background color to see the modal on (removes "translucence") */
     background-color: white;
-    /* Stays max-width until width value is reached */
-    width: 500px;
-    max-width: 80%;
+    width: fit-content;
 }
 
 .modal.active {
@@ -107,7 +260,7 @@ How to create a modal popup:
 }
 
 :root {
-    --modal-element-padding: 10px 15px;
+    --modal-element-padding: .5rem 1rem;
 }
 
 .modal-header {
@@ -115,7 +268,7 @@ How to create a modal popup:
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid crimson;
+    border-bottom: 1px solid black;
 }
 
 .modal-header .title {
@@ -128,8 +281,9 @@ How to create a modal popup:
     border: none;
     outline: none;
     background: none;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     font-weight: bold;
+    color: crimson;
 }
 
 .modal-body {

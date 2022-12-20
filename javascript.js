@@ -4,6 +4,17 @@
 // Paste server info:
 // http://127.0.0.1:5500/index.html
 
+// Randomized background image
+// https://stackoverflow.com/questions/27027480/choosing-a-random-background-html-css
+function randomBackgroundImage(){
+  let imageArray = ['blueBook.png', 'darkBlueBook.png', 'greenBook.png', 'lightBlueBook.png', 'redBook.png', 'tanBook.png'];
+  let randIndex = Math.floor(Math.random() * imageArray.length);
+  // returns a random imageArray element
+  return imageArray[randIndex];
+}
+
+// Making an array of file paths in JavaScript?
+// https://stackoverflow.com/questions/41667237/making-an-array-of-file-paths-in-javascriptvar fs = require('fs');
 
 
 // "Book" object constructor that stores relevent book information
@@ -28,10 +39,16 @@ function Book(title, author, pages, read) {
 // Create array to hold "Book" objects
 var myLibrary = [];
 
+
 // Intial posted books
-const randomBook1 = addBookToLibrary('titleText1', 'authorText1', 142, true);
-const randomBook2 = addBookToLibrary('titleText2', 'authorText2', 332, false);
-const randomBook3 = addBookToLibrary('titleText3', 'authorText3', 834, true);
+addBookToLibrary('ABCDEabcde', 'JjKkLl', 142, true);
+addBookToLibrary('titleText1', 'authorText1', 142, true);
+addBookToLibrary('titleText2', 'authorText2', 332, false);
+addBookToLibrary('titleText3', 'authorText3', 834, true);
+addBookToLibrary('titleText4', 'authorText4', 142, true);
+addBookToLibrary('titleText5', 'authorText5', 332, false);
+addBookToLibrary('titleText6', 'authorText6', 834, true);
+addBookToLibrary('titleText7', 'authorText7', 142, true);
 
 function addBookToLibrary(title, author, pages, read) {
   const addedBook = new Book(title, author, pages, read)
@@ -59,65 +76,71 @@ function listLibraryBooks(library) {
   
   // Generate the container's book cards:
   for (book in library){
-      const bookDiv = document.createElement('div');
+    const bookDiv = document.createElement('div');
 
-      // Create elements
-      const bookTitle = document.createElement('p');
-      const bookAuthor = document.createElement('p');
-      const bookPages = document.createElement('p');
-      const bookRead = document.createElement('p');
-      const deleteButton = document.createElement('button');
-      const readButton = document.createElement('button');
-      
-      // Add CSS classes to elements
-      bookDiv.classList.add('bookCard');
-      deleteButton.classList.add('delete-button');
-      readButton.classList.add('read-button');
-      
-      // Append elements to the card div
-      bookDiv.append(bookTitle);
-      bookDiv.append(bookAuthor);
-      bookDiv.append(bookPages);
-      bookDiv.append(bookRead);
-      bookDiv.append(deleteButton);
-      bookDiv.append(readButton);
-      
-      // Insert elements' text
-      bookTitle.innerText=library[book].title;
-      bookAuthor.innerText=library[book].author;
-      bookPages.innerText=library[book].pages;
-      bookRead.innerText=library[book].read;      
-      
-      // Append the manipulated card div to the card container
-      container.appendChild(bookDiv);
-      
-      // Set each card-element-ID-value to correspond with the object-index-value
-      // in the myLibrary array. This lets each card-element (AKA: "bookDiv")
-      // "remember" which array item needs to be removed or modified when the
-      // following events fire off.
-      bookDiv.id = book;
-      
-      // Variable for code legibility
-      let selectedBook = bookDiv.id;
-      
-      // Deletes the selected book's card
-      deleteButton.addEventListener('click', () => {
-        myLibrary.splice(selectedBook, 1);
-        listLibraryBooks(myLibrary);
-      });
-      
-      // Toggles the selected book's card's read boolean
-      readButton.addEventListener('click', () => {
-        myLibrary[selectedBook].read = !myLibrary[selectedBook].read;
-        listLibraryBooks(myLibrary);
-      })
-    }
+    // Create elements
+    const bookTitle = document.createElement('p');
+    const bookAuthor = document.createElement('p');
+    const bookPages = document.createElement('p');
+    const bookRead = document.createElement('p');
+    const buttonsDiv = document.createElement('div');
+    const deleteButton = document.createElement('button');
+    const readButton = document.createElement('button');
+    
+    // Add CSS classes to elements
+    bookDiv.classList.add('bookCard');
+    deleteButton.classList.add('delete-button');
+    readButton.classList.add('read-button');
+    buttonsDiv.classList.add('buttonsDiv');
+    
+    // Append elements to the card div
+    bookDiv.append(bookTitle);
+    bookDiv.append(bookAuthor);
+    bookDiv.append(bookPages);
+    bookDiv.append(bookRead);
+    bookDiv.append(buttonsDiv);
+    buttonsDiv.append(deleteButton);
+    buttonsDiv.append(readButton);
+    
+    
+    // Adds a random background image for the
+    bookDiv.style.backgroundImage = "url('../mystBookTextures/"+ randomBackgroundImage() +"')";
+    
+    // Insert elements' text
+    bookTitle.innerText=library[book].title;
+    bookAuthor.innerText=library[book].author;
+    bookPages.innerText=library[book].pages;
+    bookRead.innerText=library[book].read;      
+    
+    // Append the manipulated card div to the card container
+    container.appendChild(bookDiv);
+    
+    // Set each card-element-ID-value to correspond with the object-index-value
+    // in the myLibrary array. This lets each card-element (AKA: "bookDiv")
+    // "remember" which array item needs to be removed or modified when the
+    // following events fire off.
+    bookDiv.id = book;
+    
+    // Variable for code legibility
+    let selectedBook = bookDiv.id;
+    
+    // Deletes the selected book's card
+    deleteButton.addEventListener('click', () => {
+      myLibrary.splice(selectedBook, 1);
+      listLibraryBooks(myLibrary);
+    });
+    
+    // Toggles the selected book's card's read boolean
+    readButton.addEventListener('click', () => {
+      myLibrary[selectedBook].read = !myLibrary[selectedBook].read;
+      listLibraryBooks(myLibrary);
+    })
+  }
   console.table(myLibrary);
 }
 
 // Initial generation of book cards
 listLibraryBooks(myLibrary);
-
 
 /* ============================== FORM CODE ============================== */
 
