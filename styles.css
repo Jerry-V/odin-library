@@ -224,7 +224,7 @@ How to create a modal popup:
     border-radius: 1em;
     /* Makes modal draw above everything else, any sufficently large number will do */
     z-index: 10;
-    background-image: url(/mystBookTextures/parched_002.png);
+    background-image: url(/mystBookTextures/parched002.png);
     background-size: cover;
     width: fit-content;
 }
