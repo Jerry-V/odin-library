@@ -1,17 +1,9 @@
 /*
 Fonts:
 https://www.guildofarchivists.org/utilities/fonts/
+Font Viewer:
+https://fontdrop.info/#/?darkmode=true
 */
-
-@font-face {
-    font-family: 'EXILE12';
-    src: url(fonts/EXILE12.ttf);
-}
-
-@font-face {
-    font-family: 'jancieni';
-    src: url(fonts/jancieni.ttf);
-}
 
 @font-face {
     font-family: 'jancient';
@@ -19,23 +11,15 @@ https://www.guildofarchivists.org/utilities/fonts/
 }
 
 @font-face {
-    font-family: 'MystLinkingBook-Black';
-    src: url(fonts/MystLinkingBook-Black.ttf);
-}
-
-@font-face {
     font-family: 'MystRevelation';
     src: url(fonts/MystRevelation.ttf);
 }
 
-@font-face {
-    font-family: 'Riven301';
-    src: url(fonts/Riven301.ttf);
-}
-
 body {
-    /* https://wallup.net/myst-video-games-myst-revelation/ */
+    font-size: 18px;
     font-family: 'jancient';
+    /* Main background image:
+    https://wallup.net/myst-video-games-myst-revelation/ */
     background-image: url(myst-1671551387242-6283.jpg);
     background-attachment: fixed;
     background-size: cover;
@@ -47,10 +31,10 @@ body {
 }
 
 #header {
-    margin: 1rem;
+    margin: 1em;
     background-color: rgba(255, 255, 255, 0.3);
-    padding: 1rem;
-    border-radius: 1rem;
+    padding: 1em;
+    border-radius: 1em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -58,164 +42,155 @@ body {
     align-self: center;
 }
 
+#header button {
+    font-size: 2em;
+}
+
 #main-container {
-    border: 2px solid red;
     margin: 1rem;
-    
     background-color: rgba(255, 255, 255, 0.3);
     padding: .5rem;
     border-radius: 1rem;
 }
 
-#bookCardsContainer {
+#book-cards-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: 1rem;
-    width: fit-content;
-    border: 1px solid blue;
+    gap: 1em;
 }
 
 /* ============================== CARD TEMPLATE ============================== */
 
 .test-card {
-    background-color: rgba(175, 109, 109, 0.5);
+    background-color: rgba(175, 109, 109, 0.25);
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    /* "mystBookTextures/darkBlueBook.png" is slightly shorter than the other pictures,
+    so by making the image & book information sections justified with "space-between"
+    it keeps everything the same spacing vertically (otherwise there would be a slight
+    'jumping-up/down' of the book-info sections alignment with each other). */
+    justify-content: space-between;
+    padding: .5rem;
     border-radius: 1rem;
 }
 
 .book-cover {
     position: relative;
+    max-width: 12em;
     color: goldenrod;
     display: flex;
     justify-content: center;
+    /* Text shadow to help with reading the information:
+    https://developer.mozilla.org/en-US/docs/Web/CSS/text-shadow
+    multiple text-shadows applies multiple layers of radial darkening */
+    text-shadow:
+    black 0px 0px 2px,
+    black 0px 0px 3px,
+    black 0px 0px 4px;
 }
 
 .book-cover img {
-    max-width: 150px;
+    max-width: inherit;
     /* blur takes the edge off the image sharpness */
-    filter: blur(.5px);
+    filter: blur(.2px);
     border-radius: .25em;
 }
 
-/*
-How to "center" an absolute positioned element::after
-https://stackoverflow.com/questions/8508275/how-to-center-a-position-absolute-element
- */
 .book-title, .book-author {
-    /* border: 1px solid blue; */
+    font-family: 'MystRevelation';
+    filter: blur(.2px);
+    /* How to "center" an absolutely positioned element:
+    https://stackoverflow.com/questions/8508275/how-to-center-a-position-absolute-element */
     position: absolute;
-    margin-left: 20%;
-    margin-right: 20%;
+    margin-left: 10%;
+    margin-right: 10%;
     margin-top: 0;
     margin-bottom: 0;
     left: 0;
     right: 0;
-    top: 20%;
+    top: 15%;
     text-align: center;
-    /* required or it will not show above the book */
+    /* required or the title and author text will not show above the book image*/
     z-index: 1;
-    /* background-color: rgba(255, 255, 255, 0.3); */
-    border-radius: 1rem;
-    text-decoration: underline;
     overflow-wrap: break-word;
+    /* This is required with this font as words are squished too close together */
+    word-spacing: 1em;
 }
 
 .book-author {
-    top: 60%;
+    /* So the author text doesn't overlap the title text */
+    top: 55%;
 }
 
 .info-container {
+    display: grid;
+    row-gap: .25em;
+    font-family: 'jancient';
+    font-size: inherit;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 10px;
+    padding: .25em;
+    border-radius: .5em;
+    background-color: rgba(255, 255, 255, 0.3);
+    color: blanchedalmond;
+    text-shadow: 
+    black 0px 0px 2px,
+    black 0px 0px 3px,
+    black 0px 0px 4px;
+}
+
+button {
+    font-family: inherit;
+    font-size: inherit;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    background: none;
+    padding: 0;
+    border: none;
+    width: fit-content;
+    color: blanchedalmond;
+    text-shadow: 
+    black 0px 0px 5px,
+    black 0px 0px 5px;
+    cursor: pointer;
+    translate: unset;
 }
 
-.button-container {
-    display: flex;
-    justify-content: space-between;
+button:hover {
+    text-shadow: 
+    blanchedalmond 0px 0px 2px,
+    blanchedalmond 0px 0px 3px,
+    blanchedalmond 0px 0px 4px,
+    black 0px 0px 5px,
+    black 0px 0px 5px;
 }
 
-
-/* ============================== BOOK FORM ============================== */
-
-#book-form {
-    width: 250px;
-    height: 300px;
-    border: solid black 2px;
-    background-color: whitesmoke;
+.info-button {
+    text-shadow: 
+    blanchedalmond 0px 0px 2px,
+    blanchedalmond 0px 0px 3px,
+    blanchedalmond 0px 0px 4px,
+    black 0px 0px 5px,
+    black 0px 0px 5px;
 }
 
-label {
-    display: inline-block;
-    min-width: 60px;
+.info-button:hover {
+    text-shadow: 
+    white 0px 0px 2px,
+    white 0px 0px 3px,
+    white 0px 0px 4px,
+    black 0px 0px 5px,
+    black 0px 0px 5px;
 }
 
-/*
-Remove number input arrows:
-https://www.w3schools.com/howto/howto_css_hide_arrow_number.asp
-*/
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-/* Firefox */
-input[type=number] {
-    -moz-appearance: textfield;
+.info-delete-button {
+    color: maroon;
 }
 
-/* ============================== BOOK CARDS ============================== */
-
-#bookIsRead {
-    margin: 0;
-}
-
-.bookCard {
-    background-repeat: no-repeat;
-    background-size: auto;
-    width: min-content;
-    height: 300px;
-    display: grid;
-    align-items: center;
-    background-size: contain;
-    color: whitesmoke;
-    border-radius: .5rem;
-    justify-items: center;
-}
-
-.bookCard p, .buttonsDiv {
-    margin: 0;
-    padding: .3rem;
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: .5rem;
-}
-
-.buttonsDiv {
-    display: flex;
-    gap: 10px;
-}
-
-/* There is a difference between :after and ::after
-https://stackoverflow.com/questions/21676996/what-is-the-difference-between-after-and-after*/
-/* .delete-button {
-    align-self: center;
-    justify-self: center;
-    width: 30px;
-    height: 30px;
-    background-color: lightblue;
-} */
-
-.delete-button::after {
-    background-color: lightcoral;
-    content: 'Remove';
-}
-
-.read-button::after {
-    background-color: lightgreen;
-    content: 'Read Toggle';
+.info-read-button {
+    color: darkgreen;
 }
 
 /* ============================== MODAL CODE ============================== */
@@ -232,9 +207,10 @@ How to create a modal popup:
 }
 
 .modal {
+    font-size: 2rem;
     /* Fixes model when scrolling */
     position: fixed;
-    /* Centers the top left corner of the modal container*/
+    /* Centers the top left corner of the modal container */
     top: 50%;
     left: 50%;
     /* Moves modal container left and up by 50% the size of the container.
@@ -243,16 +219,22 @@ How to create a modal popup:
     usage of a smooth scale-in/out transition later on. */
     transform: translate(-50%,-50%) scale(0);
     /* Video notes that the modal scales-in from the bottom right because
-    we are in development mode */
+    he is in development mode */
     transition: 200ms ease-in-out;
-    border: 1px solid black;
-    border-radius: 1rem;
+    border-radius: 1em;
     /* Makes modal draw above everything else, any sufficently large number will do */
     z-index: 10;
-    /* Makes lower layers not show through the modal container by giving
-    a solid background color to see the modal on (removes "translucence") */
-    background-color: white;
+    background-image: url(/mystBookTextures/parched_002.png);
+    background-size: cover;
     width: fit-content;
+}
+
+.modal, .modal button {
+    color: blanchedalmond;
+    text-shadow: 
+    black 0px 0px 2px,
+    black 0px 0px 3px,
+    black 0px 0px 4px;
 }
 
 .modal.active {
@@ -260,7 +242,7 @@ How to create a modal popup:
 }
 
 :root {
-    --modal-element-padding: .5rem 1rem;
+    --modal-element-padding: 0 .75em 0;
 }
 
 .modal-header {
@@ -268,12 +250,12 @@ How to create a modal popup:
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid black;
 }
 
 .modal-header .title {
-    font-size: 1.25rem;
+    font-size: 1.25em;
     font-weight: bold;
+    font-family: 'MystRevelation';
 }
 
 .modal-header .close-button {
@@ -281,9 +263,13 @@ How to create a modal popup:
     border: none;
     outline: none;
     background: none;
-    font-size: 1.5rem;
+    font-size: 3em;
     font-weight: bold;
     color: crimson;
+}
+
+.modal-header .close-button:hover {
+    color: red;
 }
 
 .modal-body {
@@ -308,4 +294,129 @@ How to create a modal popup:
     /* Makes overlay capture click events and thus prevents being able to click
     anything (like buttons) behind the overlay. */
     pointer-events: all;
+}
+
+/* ============================== BOOK FORM ============================== */
+
+#book-form {
+    font-size: 1em;
+    width: 15em;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-template-rows: repeat(4, 1fr) 2em;
+    gap: .25em 0;
+}
+
+label {
+    align-self: center;
+}
+
+input {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+    text-shadow: inherit;
+    background: transparent;
+    outline: none;
+    border: none;
+    /* The following prevents the text-shadow from being cut off */
+    box-sizing: border-box;
+    text-indent: .5em;
+    line-height: 1.5em;
+}
+
+::placeholder {
+    color: blanchedalmond;
+    opacity:.5;
+}
+
+/* Remove number-input arrows:
+https://www.w3schools.com/howto/howto_css_hide_arrow_number.asp */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+#read {
+    justify-self: start;
+}
+
+#book-form button {
+    font-family: inherit;
+    color: goldenrod;
+}
+
+#book-form button:hover {
+    color: gold;
+}
+
+#submit-btn {
+    justify-self: right;
+}
+
+/* ============================== CHECKBOX ============================== */
+
+/* How to customize checkboxes:
+below code copied and modified from:
+https://moderncss.dev/pure-css-custom-checkbox-style/ */
+
+:root {
+    --form-control-color: maroon;
+    --form-control-disabled: #959495;
+    --fadded-currentColor: rgba(255, 235, 205, 0.521);
+    --full-currentColor: rgb(255, 235, 205);
+}
+
+input[type="checkbox"] {
+    /* Add if not using autoprefixer */
+    -webkit-appearance: none;
+    /* Remove most all native input styles */
+    appearance: none;
+    /* For iOS < 15 */
+    background-color: var(--form-background);
+    /* Not removed via appearance */
+    margin: 0;
+
+    font: inherit;
+    color: currentColor;
+    width: 1.15em;
+    height: 1.15em;
+    border: 0.15em solid var(--fadded-currentColor);
+    border-radius: 0.15em;
+    transform: translateY(-0.075em);
+
+    display: grid;
+    place-content: center;
+
+    margin-left: .6em;
+    align-self: center;
+}
+
+input[type="checkbox"]::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    transform: scale(0);
+    transform-origin: bottom left;
+    /* transition: 120ms transform ease-in-out; */
+    box-shadow: inset 1em 1em var(--form-control-color);
+    /* Windows High Contrast Mode */
+    background-color: CanvasText;
+}
+
+input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+  
+input[type="checkbox"]:hover {
+    border-color: var(--full-currentColor);
 }

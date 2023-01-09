@@ -10,24 +10,32 @@
 </head>
 <body>
     <div id="header">
-        <button data-modal-target="#modal">Open Modal</button>
-        <div class="test-card">
-            <div class="book-cover">
-                <p class="book-title" data-bookTitle>[Book Title] asddddddddasddddddddddasdf asd fasdf asd fasd f</p>
-                <p class="book-author" data-bookAuthor>[Book Author] as dfasd fasdf </p>
-                <img src="mystBookTextures/redBook.png">
-            </div>
-            <div class="info-container">
-                <div class="info-pages">
+        <button data-modal-target="#modal">Add Book</button>
+        <!--     
+            How to use HTML templates to clone HTML code for multiple book cards:
+            https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template
+         -->
+        <template id="book-card-template">
+            <div class="test-card" data-bookCardDiv>
+                <div class="book-cover" data-bookCover>
+                    <p class="book-title" data-bookTitle>[Book Title]</p>
+                    <p class="book-author" data-bookAuthor>[Book Author]</p>
+                    <img  src="mystBookTextures/tanBook.png" data-bookIMG>
+                </div>
+                <div class="info-container">
                     <div class="info-text">Pages:</div>
-                    <div class="info-text" data-pageNumber>[Page Number]</div>    
-                </div>
-                <div class="button-container">
-                    <button data-removeButton class="info-button">Remove</button>
-                    <button data-readStatus class="info-button">Read/Not</button>
+                    <div class="info-text" data-page-number>[Page Number]</div>
+                    <div class="info-text">Read:</div>
+                    <div class="info-text" data-read-status>[Read Status]</div>  
+                    <!--
+                        Unicode symbols:
+                        https://www.w3schools.com/charsets/ref_utf_symbols.asp
+                    -->
+                    <button data-delete-button class="info-button info-delete-button">Delete</button>
+                    <button data-read-status-button class="info-button info-read-button">Change Read</button>
                 </div>
             </div>
-        </div>
+        </template>
     </div>
     <div id="main-container">
         <!--
@@ -37,15 +45,14 @@
                 https://www.youtube.com/watch?v=MBaw_6cPmAw
         -->
         <!--
-            "data-modal-target" becomes a selector (using JS) that points to the modal
-            we want to open. Using "#modal" allows us to have multiple different modals
-            on the same page with different buttons to open them and it will only open
-            the exact modal designated.
+            "data-modal-target" in the header div becomes a selector (using JS) that points to 
+            specific modal we want to open. Using "#modal" allows us to have multiple
+            different modals on the same page with different buttons to open them and it will
+            only open the exact modal designated.
         -->
-  
         <div class="modal" id="modal">
             <div class="modal-header">
-                <div class="title">Book Form</div>
+                <div class="title">New Book</div>
                 <!--
                     From cited video above:
                     Using HTML entity "&times" instead of text "X" because
@@ -64,34 +71,21 @@
                         By: Web Dev Simplified
                         https://www.youtube.com/watch?v=fNcJuPIZ2WE
                     -->
-                    <div>
-                        <label for="title">Title:</label>
-                        <input type="text" name="title" id="title" placeholder="Title" required>    
-                    </div>
-                    <div>
-                        <label for="author">Author:</label>
-                        <input type="text" name="author" id="author" placeholder="Author" required>    
-                    </div>
-                    <div>
-                        <label for="pages">Pages:</label>
-                        <input type="number" name="pages" id="pages" placeholder="Pages" required min="1" step="1">
-                    </div>
-                    <div>
-                        <label for="read">Is Read:</label>
-                        <input type="checkbox" name="read" id="read">
-                    </div>
-                    <div>
-                        <button type="reset">Reset Form</button>
-                    </div>
-                    <div>
-                        <button type="submit">Submit Form</button>
-                    </div>
-                    <br>
+                    <label for="title">Title:</label>
+                    <input type="text" name="title" id="title" placeholder="Title of Book" required>    
+                    <label for="author">Author:</label>
+                    <input type="text" name="author" id="author" placeholder="Name of Author" required>    
+                    <label for="pages">Pages:</label>
+                    <input type="number" name="pages" id="pages" placeholder="Number of Pages" required min="1" step="1">
+                    <label for="read">Is Read:</label>
+                    <input type="checkbox" name="read" id="read">
+                    <button id="reset-btn" type="reset">Reset</button>
+                    <button id="submit-btn" type="submit">Submit</button>
                 </form>
             </div>
         </div>
         <div id="overlay"></div>
-        <div id="bookCardsContainer"></div>
+        <div id="book-cards-container"></div>
     </div>
 </body>
 </html>

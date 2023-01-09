@@ -1,13 +1,17 @@
-// To get live server withing Visual Studio Code:
-// Ctrl + Shift + P
-// Simple Browser: Show
-// Paste server info:
-// http://127.0.0.1:5500/index.html
-
 // Randomized background image
 // https://stackoverflow.com/questions/27027480/choosing-a-random-background-html-css
+// Any additional images MUST have their files added to "odin-library\mystBookTextures"
+// and their file-name added to this image array in order to be selected by the
+// "randomBackgroundImage" function
 function randomBackgroundImage(){
-  let imageArray = ['blueBook.png', 'darkBlueBook.png', 'greenBook.png', 'lightBlueBook.png', 'redBook.png', 'tanBook.png'];
+  let imageArray = [
+    'blueBook.png'
+    , 'darkBlueBook.png'
+    , 'greenBook.png'
+    , 'lightBlueBook.png'
+    , 'redBook.png'
+    , 'tanBook.png'
+  ];
   let randIndex = Math.floor(Math.random() * imageArray.length);
   // returns a random imageArray element
   return imageArray[randIndex];
@@ -15,7 +19,6 @@ function randomBackgroundImage(){
 
 // Making an array of file paths in JavaScript?
 // https://stackoverflow.com/questions/41667237/making-an-array-of-file-paths-in-javascriptvar fs = require('fs');
-
 
 // "Book" object constructor that stores relevent book information
 function Book(title, author, pages, read) {
@@ -39,16 +42,50 @@ function Book(title, author, pages, read) {
 // Create array to hold "Book" objects
 var myLibrary = [];
 
-
 // Intial posted books
-addBookToLibrary('ABCDEabcde', 'JjKkLl', 142, true);
-addBookToLibrary('titleText1', 'authorText1', 142, true);
-addBookToLibrary('titleText2', 'authorText2', 332, false);
-addBookToLibrary('titleText3', 'authorText3', 834, true);
-addBookToLibrary('titleText4', 'authorText4', 142, true);
-addBookToLibrary('titleText5', 'authorText5', 332, false);
-addBookToLibrary('titleText6', 'authorText6', 834, true);
-addBookToLibrary('titleText7', 'authorText7', 142, true);
+addBookToLibrary('Channelwood Journal', 'Atrus', 24, true);
+addBookToLibrary('Stoneship Journal', 'Atrus', 27, true);
+addBookToLibrary('Selenitic Journal', 'Atrus', 30, false);
+addBookToLibrary('Mechanical Journal', 'Atrus', 16, true);
+addBookToLibrary('Atrus\' Riven Journal', 'Atrus', 18, true);
+addBookToLibrary('Catherine\'s Journal', 'Catherine', 92, false);
+addBookToLibrary('Gehn\'s Journal', 'Gehn', 26, true);
+
+// An array to hold all book cover image file names.
+// Previously the images would always change upon every refresh as
+// they were only ever selected upon a refresh. This would cause clicking
+// any button to refresh the page, and thus change every book's picture
+// every time. This method of image assignment prevents that by creating
+// a semi-randomly populated array of image names outside of any usage of
+// the "listLibraryBooks" function (which would refresh the listed books)
+var myLibraryBookCovers = [];
+
+// A means of populating the "myLibraryBookCovers" array so that
+// no neighboring array elements will have the same value. This will
+// make no two neighboring books have the same background image.
+let previousBook = 'placeholder';
+let nextBook = 'placeholder';
+let randomImage;
+
+for (book in myLibrary) {
+  while (previousBook === nextBook) {
+    randomImage = randomBackgroundImage();
+    nextBook = randomImage;
+  }
+  myLibraryBookCovers.push(randomImage);
+  previousBook = nextBook;
+}
+
+// Adds another randomly picked book cover to myLibraryBookCovers 
+// without neighboring items being duplicates.
+function expandMyLibraryBookCovers(){
+  while (previousBook === nextBook) {
+    randomImage = randomBackgroundImage();
+    nextBook = randomImage;
+  }
+  myLibraryBookCovers.push(randomImage);
+  previousBook = nextBook;
+}
 
 function addBookToLibrary(title, author, pages, read) {
   const addedBook = new Book(title, author, pages, read)
@@ -63,9 +100,8 @@ function addBookToLibrary(title, author, pages, read) {
   }
 }
 
-// Generates the book-cards according to the data within the myLibrary array.
-function listLibraryBooks(library) {
-  const container = document.querySelector('#bookCardsContainer');
+function listLibraryBooks(library){
+  const container = document.querySelector('#book-cards-container');
   
   // Remove all previous child nodes within container for a fresh
   // repopulation of said container with the updated myLibrary array.
@@ -74,69 +110,49 @@ function listLibraryBooks(library) {
     container.removeChild(container.lastChild);
   }
   
-  // Generate the container's book cards:
-  for (book in library){
-    const bookDiv = document.createElement('div');
-
-    // Create elements
-    const bookTitle = document.createElement('p');
-    const bookAuthor = document.createElement('p');
-    const bookPages = document.createElement('p');
-    const bookRead = document.createElement('p');
-    const buttonsDiv = document.createElement('div');
-    const deleteButton = document.createElement('button');
-    const readButton = document.createElement('button');
+  // How to use <template> with dynamic IDs?
+  // https://stackoverflow.com/questions/56341888/how-to-use-template-with-dynamic-ids  
+  const templateInstance = document.getElementById("book-card-template");
+  
+  for(book in library){
+    let clone = document.importNode(templateInstance .content, true);
+    // Since "book" will return an index number of the "library" array,
+    // I can use that to give each generated card div a unique ID value
+    clone.querySelector('[data-bookCardDiv]').id = book;
+    clone.querySelector('[data-bookTitle]').textContent = library[book].title;
+    clone.querySelector('[data-bookAuthor]').textContent = library[book].author;
+    clone.querySelector('[data-page-number]').textContent = library[book].pages;
+    clone.querySelector('[data-read-status]').textContent = library[book].read;
     
-    // Add CSS classes to elements
-    bookDiv.classList.add('bookCard');
-    deleteButton.classList.add('delete-button');
-    readButton.classList.add('read-button');
-    buttonsDiv.classList.add('buttonsDiv');
+    // "selectedBook" is needed, else only the final book is ever deleted. I suspect
+    // it is b/c using "book" instead somehow (im not sure) always uses the final
+    // value of book. This would cause "splice" to always use a number equal to or
+    // greater than the current length of "myLibrary", thus always deleting the
+    // final element.
+    let selectedBook = clone.querySelector('[data-bookCardDiv]').id;
     
-    // Append elements to the card div
-    bookDiv.append(bookTitle);
-    bookDiv.append(bookAuthor);
-    bookDiv.append(bookPages);
-    bookDiv.append(bookRead);
-    bookDiv.append(buttonsDiv);
-    buttonsDiv.append(deleteButton);
-    buttonsDiv.append(readButton);
+    // Adds the background image assigned to the element
+    let text = myLibraryBookCovers[selectedBook];
+    clone.querySelector('[data-bookIMG]').src = "../mystBookTextures/" + text;
     
-    
-    // Adds a random background image for the
-    bookDiv.style.backgroundImage = "url('../mystBookTextures/"+ randomBackgroundImage() +"')";
-    
-    // Insert elements' text
-    bookTitle.innerText=library[book].title;
-    bookAuthor.innerText=library[book].author;
-    bookPages.innerText=library[book].pages;
-    bookRead.innerText=library[book].read;      
-    
-    // Append the manipulated card div to the card container
-    container.appendChild(bookDiv);
-    
-    // Set each card-element-ID-value to correspond with the object-index-value
-    // in the myLibrary array. This lets each card-element (AKA: "bookDiv")
-    // "remember" which array item needs to be removed or modified when the
-    // following events fire off.
-    bookDiv.id = book;
-    
-    // Variable for code legibility
-    let selectedBook = bookDiv.id;
     
     // Deletes the selected book's card
-    deleteButton.addEventListener('click', () => {
+    clone.querySelector('[data-delete-button]').addEventListener('click', () => {
       myLibrary.splice(selectedBook, 1);
+      myLibraryBookCovers.splice(selectedBook, 1);
+      console.log('on deletion' + book);
       listLibraryBooks(myLibrary);
     });
     
     // Toggles the selected book's card's read boolean
-    readButton.addEventListener('click', () => {
+    clone.querySelector('[data-read-status-button]').addEventListener('click', () => {
       myLibrary[selectedBook].read = !myLibrary[selectedBook].read;
       listLibraryBooks(myLibrary);
     })
+    
+    // Adds the finalized book card to the page
+    document.getElementById('book-cards-container').appendChild(clone);
   }
-  console.table(myLibrary);
 }
 
 // Initial generation of book cards
@@ -177,6 +193,10 @@ form.addEventListener('submit', (e)=>{
   // Once the form's info is received, add another book to the library
   addBookToLibrary(title,author,pages,read);
   
+  // If this array isn't expanded, then when "listLibraryBooks" is called it will
+  // create a book without an image.
+  expandMyLibraryBookCovers();
+  
   // Update the displayed books
   listLibraryBooks(myLibrary);
 });
@@ -192,7 +212,8 @@ form.addEventListener('submit', (e)=>{
 // "data-modal-target" are the buttons for opening up the modal
 const openModalButtons = document.querySelectorAll('[data-modal-target]');
 const closeModalButtons = document.querySelectorAll('[data-close-button]');
-// Selected overlay element so it will show/hide as needed
+
+// Selected the overlay element to later make it show/hide as needed
 const overlay = document.getElementById('overlay');
 
 
@@ -208,7 +229,8 @@ openModalButtons.forEach(button => {
 
 // Adds the ability to close modals by clicking outside the modal text-box area.
 overlay.addEventListener('click', () => {
-  // Selects all modals but with ".modal.active" it selects only our active modals.
+  // Selects all modals but with ".modal.active" it selects
+  // only the modals with the "active" class.
   const modals = document.querySelectorAll('.modal.active');
   modals.forEach(modal => {
     closeModal(modal);
