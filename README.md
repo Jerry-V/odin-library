@@ -1,6 +1,6 @@
 # odin-library
 The Odin Project's javascript library assignment. Create a simple book reading application that records title, author, pages, and whether it was read.
-This implementation is themed after the MYST game series, with the background image from "MYST IV: Revelation".
+This implementation is themed after the "MYST" game series, with the background image from "MYST IV: Revelation".
 
 **Assignment:**
 > https://www.theodinproject.com/lessons/node-path-javascript-library
