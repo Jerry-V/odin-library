@@ -133,7 +133,7 @@ function listLibraryBooks(library){
     
     // Adds the background image assigned to the element
     let text = myLibraryBookCovers[selectedBook];
-    clone.querySelector('[data-bookIMG]').src = "./mystBookTextures/" + text;
+    clone.querySelector('[data-bookIMG]').src = "odin-library/mystBookTextures/" + text;
     
     
     // Deletes the selected book's card
